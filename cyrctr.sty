@@ -1,0 +1,20 @@
+% cyrctr.sty
+% 5 Jan 2008,
+% (c) Copyright 2004-2008 Oleg Mytnyk
+% For additional information look after \endinput
+\NeedsTeXFormat{LaTeX2e}
+%\ProvidesPackage{cyrctr}[2008/01/05
+%Cyrillic Counterstyle v1.1]
+
+\def\Cyrctr#1{\@Cyrctr{\@nameuse{c@#1}}}
+\def\@Cyrctr#1{\ifcase#1\or \CYRA\or \CYRB\or\CYRV\or%
+  \CYRG\else\@iCyrctr{#1}\fi}
+\def\@iCyrctr#1{\ifcase#1\or\or\or\or\or \CYRD\or \CYRE\or \CYRZH\or\CYRZ\or%
+  \CYRI\or \CYRISHRT\or\CYRK\else\ensuremath{\Omega}\@ctrerr\fi}
+\endinput
+
+Usage:
+
+\renewcommand{\the<counter>}{\Cyrctr{<counter>}}
+
+e.g. \renewcommand{\thechapter}{\Cyrctr{chapter}}

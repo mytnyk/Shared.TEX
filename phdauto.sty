@@ -1,0 +1,153 @@
+
+
+% Design the bibliography style:
+\renewenvironment{thebibliography}[1]
+     {%\chapter*{\bibname}%
+      %\@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+      \def\@biblabel##1{##1.}
+      %\addcontentsline{toc}{chapter}{\bibname}
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+
+
+% look at the p.275 latex book
+\def\section{\@startsection {section}{1}{\parindent}{3.5ex plus 1ex minus
+    .2ex}{2.3ex plus.2ex}{\bf\center}}
+\def\subsection{\@startsection{subsection}{2}{\parindent}{3.25ex plus 1ex
+     minus .2ex}{1.5ex plus.2ex}{\normalsize\bf}}
+
+% Design the running heads:
+%\cfoot{}\lhead{}\chead{}\rhead{- \thepage\ -}
+
+% Design the caption style: e.g. for figures (make dot instead of colon):
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#1. #2}%
+  \ifdim \wd\@tempboxa >\hsize
+    #1. #2\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+
+
+% Handling tables and captions:
+\long\def\@maketablecaption#1{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#1}%
+  \ifdim \wd\@tempboxa >\hsize
+    #1\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+\long\def\@tablecaption#1[#2]#3{%
+  \par
+  \addcontentsline{\csname ext@#1\endcsname}{#1}%
+    {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \normalsize
+    \@maketablecaption{\rightline{\csname fnum@#1\endcsname}}\par\centerline{\ignorespaces #3}\vspace{5pt}\par
+  \endgroup}
+
+\def\tablecaption{%
+   \ifx\@captype\@undefined
+     \@latex@error{\noexpand\caption outside float}\@ehd
+     \expandafter\@gobble
+   \else
+     \refstepcounter\@captype
+     \expandafter\@firstofone
+   \fi
+   {\@dblarg{\@tablecaption\@captype}}%
+}
+\def\fps@table{ht}
+\def\ftype@table{2}
+\def\fnum@table{\tablename~\thetable}
+\renewenvironment{table}
+               {\setlength\abovecaptionskip{0\p@}%
+                \setlength\belowcaptionskip{5\p@}%
+                \@float{table}\begin{center}}
+               {\end{center}\end@float}
+\renewenvironment{table*}
+               {\setlength\abovecaptionskip{0\p@}%
+                \setlength\belowcaptionskip{5\p@}%
+                \@dblfloat{table}\begin{center}}
+               {\end{center}\end@dblfloat}
+
+% THEOREMS -------------------------------------------------------------
+
+%\theoremstyle{plain}
+\newtheorem{thm}{Теорема}[section]
+%\newtheorem{thmi}{Теорема}% in the introduction
+%\newtheorem{defi}{Означення}[chapter]
+\newtheorem{defi}{Означення}
+%\newtheorem{defii}{Означення}% in the introduction
+\newtheorem{con}[thm]{Висновок}
+\newtheorem{cor}[thm]{Наслідок}
+\newtheorem{lem}[thm]{Лема}
+\newtheorem{rem}[thm]{Зауваження}
+\renewcommand{\proofname}{Доведення}
+
+\newtheoremstyle{citing}% name
+  {3pt}%      Space above, empty = `usual value'
+  {3pt}%      Space below
+  {\itshape}% Body font
+  {}%         Indent amount (empty = no indent, \parindent = para indent)
+  {\bfseries}% Thm head font
+  {.}%        Punctuation after thm head
+  {.5em}%     Space after thm head: " " = normal interword space;
+        %       \newline = linebreak
+  {\thmnote{#3}}% Thm head spec
+\theoremstyle{citing}
+\newtheorem*{varthm}{}% all text supplied in the note
+
+% OPERATORS -------------------------------------------------------------
+\DeclareMathOperator{\supp}{supp} \DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\cov}{cov} \DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\hull}[1]{\mathrm{co}\{#1\}}
+\DeclareMathOperator{\inter}{int}
+\newcommand{\combi}[2]{\genfrac{(}{)}{0pt}{0}{#1}{#2}}
+\newcommand{\meanl}[1]{{\mathbb{E}}\left[#1\right]}%
+\newcommand{\mean}[1]{{\mathbb{E}}#1}%
+\DeclareMathOperator{\proj}{proj}
+\newcommand{\spanv}[1]{\mathrm{span}\left\{#1\right\}}
+\newcommand{\col}[1]{\mathrm{col}\left(#1\right)}
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+% SAFE INCLUDE OF PDF----------------------------------------------------
+\newcounter{USEPDFTEX}
+\newcommand{\safepdf}[2]{\ifnum \theUSEPDFTEX > 0 #1 \else #2 \fi}
+
+% DEBUG CODE         ----------------------------------------------------
+%\newcommand{\debug}[1]{\textcolor[rgb]{0.34,0.84,0.82}{#1}}
+
+% -----------------------------------------------------------------------
+
+\newcounter{Fourth}
+\setcounter{Fourth}{4}
+\newcounter{Fifth}
+\setcounter{Fifth}{5}
+\newcounter{Sixth}
+\setcounter{Sixth}{6}
+\newcounter{Eleventh}
+\setcounter{Eleventh}{11}
